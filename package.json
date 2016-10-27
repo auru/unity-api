@@ -1,0 +1,22 @@
+{
+  "name": "unity-api",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/auru/unity-api.git"
+  },
+  "author": "Vitaliy Blinovskov (blinovskov@yandex-team.ru)",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/auru/unity-api/issues"
+  },
+  "homepage": "https://github.com/auru/unity-api#readme"
+}
