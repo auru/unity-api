@@ -16,7 +16,3 @@ test('instance of APIError', t => {
 test('to string', t => {
     t.is(t.context.error.toString(), '404 - Not Found')
 });
-
-test.failing('Error.isError', t => {
-    t.true(Error.isError(t.context.error))
-});
