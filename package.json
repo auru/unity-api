@@ -2,7 +2,7 @@
   "name": "unity-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "npm run test && npm run clean && ./node_modules/.bin/babel src --out-dir dist",
     "clean": "./node_modules/.bin/rimraf dist",
