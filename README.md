@@ -10,8 +10,8 @@
 
 # Table of Contents
   * [Installation](#installation)
-  * [API](#usage)
-    * [createAPI](createapiresources-middleware-apiprefix-fetchoptions)
+  * [API](#api)
+    * [createAPI](#createapiresources-middleware-apiprefix-fetchoptions)
   * [Example](#example)
   * [License](#license)
 
@@ -22,28 +22,57 @@ npm i --save unity-api
 ```
 
 # API
-## createAPI(resources, middleware, APIPrefix, fetchOptions);
+## createAPI(resources, middleware, namespace, fetchOptions);
 
 **Returns:** {Object}
 
-Use module's `default export` to create our API object.
-### Resources {Object} *Optional*
+Use module's `default export` to create an API object.
 
-### Middleware {Array} *Optional*
+### resources {Object} *Optional*
+
+### middleware {Array} of {Function} *Optional*
+
+An array of middleware functions, that can manipulate an api call, its params and its result, along with options for the remaning middleware in chain.
+
+```js 
+const myMiddleware = next => async (options, params, resource, method) => { return await next() }
+```
+#### next {Function}
+
+An `async` function, that calls next middleware in chain, or, in case of last middleware, the api method itself.
+
+#### options {Object} *Optional*
+
+Middleware parameters, that an api call was made with.
+
+#### params {Object} *Optional*
+
+Parameters, that an api call was made with.
+
+#### resource {String} *Optional*
+
+Name of the resource, whose method was called.
+
+#### method {String} *Optional*
+
+Name of the method called
 
 **Example logger middleware:**
 ```js
-export default next => async (mwOptions, apiParams, resource, method) => {
-    console.log('args', {mwOptions, apiParams, resource, method}); // eslint-disable-line no-console
+export default next => async (middlewareOptions, apiCallParams, resource, method) => {
+    console.log('args', { middlewareOptions, apiCallParams, resource, method }); // eslint-disable-line no-console
     const result = await next();
     console.log('result', result); // eslint-disable-line no-console
     return result;
 };
 ```
 
-### APIPrefix {String} *Optional*
+### namespace {String} *Optional*
 
 **Default:** `'api'`
+
+Usually you would want to proxy api calls from the SPA to the backend using some common namespace like that:
+example.com/**api**/user/get
 
 ### fetchOptions {Object} *Optional*
 
