@@ -11,7 +11,6 @@
 # Table of Contents
   * [Installation](#installation)
   * [API](#api)
-    * [createAPI](#createapiresources-middleware-namespace-fetchoptions)
   * [Example](#example)
   * [License](#license)
 
@@ -30,39 +29,41 @@ Use module's `default export` to create an API object.
 
 ### resources {Object} *Optional*
 
-An API would be redundant without the resources defined. 
+An API would be redundant without any of resources defined. 
 
 Each resource represents an entity in your REST-API as an `object` with the following properties:
 
 #### namespace {String} *Optional*
 
-Namespace of an entity. E.g.: example.com/api/**user**/get
+Namespace of an entity. *e.g.*: example.com/api/**user**/get
 
 #### methods {Object}
 
-Dictionary of facade-methods that transform your api calls to `fetch` calls.
+Dictionary of facade-methods that transform your api calls params to `fetch` calls params.
 Each method should return a plain `object` with the following properties:
 
 ##### path {Array|String} *Optional*
-**Default:**' `''`
+**Default:** `''`
 
-If path is an `array`, items will be joined ad normalized.
+If path is an `array`, items will be joined and normalized.
 
 ##### query {Object} *Optional*
-**Default:**' `{}`
+**Default:** `{}`
 
 Query-like object.
 
 ##### options {Object} *Optional*
-**Default:**' `{}`
+**Default:** `{}`
 
 `fetch` [options](https://developer.mozilla.org/en-US/docs/Web/API/GlobalFetch/fetch#Parameters).
 
 ##### method {string} *Optional*
-**Default:**' `'json'`
+**Default:** `'json'`
 
-Method to be called on feth's response.
+Method to be called on `fetch`'s response.
 
+
+Ex
 ```js
 const userResource = {
   namespace: 'user',
@@ -71,8 +72,9 @@ const userResource = {
     
     // id = 1, extanted = true
     // GET: /api/user/get/1?extended=true
-    getUser: ({ id, extended }) => ({ path: ['get', id], query: { extended: !!extended } }),
+    get: ({ id, extended }) => ({ path: ['get', id], query: { extended: !!extended } }),
     
+    // POST: /api/user/edit
     save: ({ id, firstname, lastname }) => {
             const formData = new FormData();
 
@@ -132,8 +134,7 @@ export default next => async (middlewareOptions, apiCallParams, resource, method
 
 **Default:** `'api'`
 
-Usually you would want to proxy api calls from the SPA to the backend using some common namespace like that:
-example.com/**api**/user/get
+Usually you would want to proxy api calls from the SPA to the backend using some common namespace. *e.g.* example.com/**api**/user/get
 
 ### fetchOptions {Object} *Optional*
 
@@ -156,15 +157,32 @@ import createAPI from 'unity-api';
 
 const resources = {
   user: {
-    prefix: 'user',
+    namespace: 'user',
     methods: {
-      get: () => ({}),
-      delete: () => ({}),
+      get: ({ id }) => ({ path: id }),
+      delete: ({ id }) => ({ path: id, options: { method: 'DELETE' } }),
     }
   }
 }
 
-const API = createAPI(resources);
+const logger = next => async (middlewareOptions, apiCallParams, resource, method) => {
+    console.log('args', { middlewareOptions, apiCallParams, resource, method }); // eslint-disable-line no-console
+    const result = await next();
+    console.log('result', result); // eslint-disable-line no-console
+    return result;
+};
+
+const middleware = [
+  logger
+]
+
+fetchOptions = {
+  method: 'GET',
+  mode: 'cors',
+  cache: 'default',
+  credentials: 'include'
+}
+const API = createAPI(resources, middleware, 'api', fetchOptions);
 
 export default API;
 ```
