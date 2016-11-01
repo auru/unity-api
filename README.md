@@ -11,6 +11,7 @@
 # Table of Contents
   * [Installation](#installation)
   * [API](#api)
+  * [Usage](#usage)
   * [Example](#example)
   * [License](#license)
 
@@ -62,8 +63,7 @@ Query-like object.
 
 Method to be called on `fetch`'s response.
 
-
-Ex
+**Example:**
 ```js
 const userResource = {
   namespace: 'user',
@@ -151,8 +151,17 @@ Usually you would want to proxy api calls from the SPA to the backend using some
 
 API-wide default `fetch` [options](https://developer.mozilla.org/en-US/docs/Web/API/GlobalFetch/fetch#Parameters).
 
+# Usage
+
+You can call your API methods like so: 
+`API[resource][method](methodParams, middlewareOptions)`
+
 # Example
+
+Create API module:
+
 ```js
+// api.js
 import createAPI from 'unity-api';
 
 const resources = {
@@ -166,9 +175,18 @@ const resources = {
 }
 
 const logger = next => async (middlewareOptions, apiCallParams, resource, method) => {
-    console.log('args', { middlewareOptions, apiCallParams, resource, method }); // eslint-disable-line no-console
+    const { log } = middlewareOptions;
+    
+    if (log) {
+       console.log('args', { middlewareOptions, apiCallParams, resource, method }); // eslint-disable-line no-console
+    }
+    
     const result = await next();
-    console.log('result', result); // eslint-disable-line no-console
+    
+    if (log) {
+       console.log('result', result); // eslint-disable-line no-console
+    }
+    
     return result;
 };
 
@@ -185,6 +203,16 @@ fetchOptions = {
 const API = createAPI(resources, middleware, 'api', fetchOptions);
 
 export default API;
+```
+
+Use it in your application:
+
+```js
+// index.js
+import API from './api';
+
+const user = await API.user.get({ id: 1 }, { log: true });
+
 ```
 
 # License
