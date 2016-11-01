@@ -11,7 +11,7 @@
 # Table of Contents
   * [Installation](#installation)
   * [API](#api)
-    * [createAPI](#createapiresources-middleware-apiprefix-fetchoptions)
+    * [createAPI](#createapiresources-middleware-namespace-fetchoptions)
   * [Example](#example)
   * [License](#license)
 
@@ -29,6 +29,67 @@ npm i --save unity-api
 Use module's `default export` to create an API object.
 
 ### resources {Object} *Optional*
+
+An API would be redundant without the resources defined. 
+
+Each resource represents an entity in your REST-API as an `object` with the following properties:
+
+#### namespace {String} *Optional*
+
+Namespace of an entity. E.g.: example.com/api/**user**/get
+
+#### methods {Object}
+
+Dictionary of facade-methods that transform your api calls to `fetch` calls.
+Each method should return a plain `object` with the following properties:
+
+##### path {Array|String} *Optional*
+**Default:**' `''`
+
+If path is an `array`, items will be joined ad normalized.
+
+##### query {Object} *Optional*
+**Default:**' `{}`
+
+Query-like object.
+
+##### options {Object} *Optional*
+**Default:**' `{}`
+
+`fetch` [options](https://developer.mozilla.org/en-US/docs/Web/API/GlobalFetch/fetch#Parameters).
+
+##### method {string} *Optional*
+**Default:**' `'json'`
+
+Method to be called on feth's response.
+
+```js
+const userResource = {
+  namespace: 'user',
+
+  methods: {
+    
+    // id = 1, extanted = true
+    // GET: /api/user/get/1?extended=true
+    getUser: ({ id, extended }) => ({ path: ['get', id], query: { extended: !!extended } }),
+    
+    save: ({ id, firstname, lastname }) => {
+            const formData = new FormData();
+
+            formData.append('firstname', firstname);
+            formData.append('lastname', lastname);
+
+            return {
+                path: 'edit',
+                options: {
+                    method: 'POST',
+                    body: formData
+                }
+            };
+        }
+  }
+}
+```
 
 ### middleware {Array} of {Function} *Optional*
 
