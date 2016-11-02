@@ -1,6 +1,7 @@
 # Unity API
 
 [![Travis-CI](https://api.travis-ci.org/auru/unity-api.svg?branch=master)](https://travis-ci.org/auru/unity-api)
+[![Coverage Status](https://coveralls.io/repos/github/auru/unity-api/badge.svg?branch=master)](https://coveralls.io/github/auru/unity-api?branch=master)
 [![npm version](https://badge.fury.io/js/unity-api.svg)](https://badge.fury.io/js/unity-api)
 [![Scrutinizer](https://scrutinizer-ci.com/g/auru/unity-api/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/auru/unity-api/)
 [![Deps](https://david-dm.org/auru/unity-api/status.svg)](https://david-dm.org/auru/unity-api)
