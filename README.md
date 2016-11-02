@@ -5,6 +5,7 @@
 [![Scrutinizer](https://scrutinizer-ci.com/g/auru/unity-api/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/auru/unity-api/)
 [![Deps](https://david-dm.org/auru/unity-api/status.svg)](https://david-dm.org/auru/unity-api)
 [![Deps-Dev](https://david-dm.org/auru/unity-api/dev-status.svg)](https://david-dm.org/auru/unity-api)
+[![Dependency Status](https://dependencyci.com/github/auru/unity-api/badge)](https://dependencyci.com/github/auru/unity-api)
 
 > REST-API helper, wrapped around `fetch`.
 
@@ -13,6 +14,7 @@
   * [API](#api)
   * [Usage](#usage)
   * [Example](#example)
+  * [Contributing](#contributing)
   * [License](#license)
 
 # Installation
@@ -214,6 +216,11 @@ import API from './api';
 const user = await API.user.get({ id: 1 }, { log: true });
 
 ```
+
+# Contributing
+
+* Provide [conventional commit messages](https://github.com/conventional-changelog/conventional-changelog-angular/blob/master/convention.md) by using `npm run commit` instead of `git commit`.
+* **Core contributors:** use GitHub's *Rebase and merge* as a default way of merging PRs.
 
 # License
 MIT © AuRu
