@@ -4,7 +4,7 @@ import 'isomorphic-fetch';
 import APIError from './error';
 
 const defaults = {
-    APIPrefix: 'api',
+    APINamespace: 'api',
     // https://developer.mozilla.org/en-US/docs/Web/API/GlobalFetch/fetch#Parameters
     fetchOptions: {
         method: 'GET',
@@ -14,18 +14,18 @@ const defaults = {
     }
 };
 
-function getFullPath(APIPrefix, prefix, path=[]) {
+function getFullPath(APINamespace, namespace, path=[]) {
     path = [].concat(path);
-    return uri.join('/', APIPrefix, prefix, ...path);
+    return uri.join('/', APINamespace, namespace, ...path);
 }
 
-function callAPI(APIPrefix, fetchOptions, prefix = '', { path=[], query={}, options={}, method='json' }) {
+function callAPI(APINamespace, fetchOptions, namespace = '', { path=[], query={}, options={}, method='json' }) {
 
-    APIPrefix = APIPrefix || defaults.APIPrefix;
+    APINamespace = APINamespace || defaults.APINamespace;
 
     query = uri.query(query);
 
-    const url = formatURL({ query, pathname: getFullPath(APIPrefix, prefix, path) });
+    const url = formatURL({ query, pathname: getFullPath(APINamespace, namespace, path) });
 
     return fetch(url, {...defaults.fetchOptions, ...fetchOptions, ...options})
         .then( result => {
