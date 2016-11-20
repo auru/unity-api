@@ -14,9 +14,14 @@ const defaults = {
     }
 };
 
+export function getAPIPrefix(APINamespace) {
+    const reAbsolute = /^(\/|https?:\/\/)/ig;
+    return reAbsolute.test(APINamespace) ? APINamespace : '/' + APINamespace;
+}
+
 function getFullPath(APINamespace, namespace, path=[]) {
     path = [].concat(path);
-    return uri.join('/', APINamespace, namespace, ...path);
+    return uri.join(getAPIPrefix(APINamespace), namespace, ...path);
 }
 
 function callAPI(APINamespace, fetchOptions, namespace = '', { path=[], query={}, options={}, method='json' }) {
