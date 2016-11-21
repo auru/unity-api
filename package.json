@@ -18,9 +18,9 @@
     "commitmsg": "./node_modules/.bin/validate-commit-msg",
     "test": "npm run lint-prod && ./node_modules/.bin/nyc ./node_modules/.bin/ava --verbose",
     "test:watch": "npm run lint && ./node_modules/.bin/nyc ./node_modules/.bin/ava --verbose --watch",
-    "release:patch": "npm run commit && npm version patch && git push upstream master --tags && npm publish",
-    "release:minor": "npm run commit && npm version minor && git push upstream master --tags && npm publish",
-    "release:major": "npm run commit && npm version major && git push upstream master --tags && npm publish"
+    "release:patch": "npm version patch && git push upstream master --tags && npm publish",
+    "release:minor": "npm version minor && git push upstream master --tags && npm publish",
+    "release:major": "npm version major && git push upstream master --tags && npm publish"
   },
   "repository": {
     "type": "git",
