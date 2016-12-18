@@ -19,9 +19,9 @@ export function getAPIPrefix(APINamespace) {
     return reAbsolute.test(APINamespace) ? APINamespace : '/' + APINamespace;
 }
 
-function getFullPath(APINamespace, namespace, path=[]) {
+export function getFullPath(APINamespace, namespace, path=[]) {
     path = [].concat(path);
-    return uri.join(getAPIPrefix(APINamespace), namespace, ...path);
+    return uri.join(getAPIPrefix(APINamespace), namespace, ...path).replace(':/', '://');
 }
 
 function callAPI(APINamespace, fetchOptions, namespace = '', { path=[], query={}, options={}, method='json' }) {
