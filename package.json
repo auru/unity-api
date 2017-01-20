@@ -62,7 +62,7 @@
     "conventional-changelog-cli": "^1.2.0",
     "coveralls": "^2.11.14",
     "cz-conventional-changelog": "^1.2.0",
-    "eslint": "^3.7.1",
+    "eslint": "^3.14.0",
     "eslint-plugin-ava": "^4.0.0",
     "fetch-mock": "^5.5.0",
     "husky": "^0.12.0",
