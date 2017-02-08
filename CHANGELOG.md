@@ -1,3 +1,24 @@
+<a name="1.0.5"></a>
+## 1.0.5 (2017-02-08)
+
+* test: added tests for createAPI ([652ec20](https://github.com/auru/unity-api/commit/652ec20))
+* test: added tests for utils and callAPIMethod ([323e95a](https://github.com/auru/unity-api/commit/323e95a))
+* test(applyMiddleware): added coverage ([71510ad](https://github.com/auru/unity-api/commit/71510ad))
+* chore(package): update ava to version 0.17.0 ([2cac815](https://github.com/auru/unity-api/commit/2cac815))
+* chore(package): update ava to version 0.18.1 ([222487f](https://github.com/auru/unity-api/commit/222487f))
+* chore(package): update babel-core to version 6.22.0 ([6a7736b](https://github.com/auru/unity-api/commit/6a7736b))
+* chore(package): update babel-polyfill to version 6.22.0 ([17db0b8](https://github.com/auru/unity-api/commit/17db0b8))
+* chore(package): update eslint to version 3.14.0 ([369e2a3](https://github.com/auru/unity-api/commit/369e2a3))
+* chore(package): update husky to version 0.12.0 ([265ce4e](https://github.com/auru/unity-api/commit/265ce4e))
+* chore(package): update husky to version 0.13.0 ([00eacb5](https://github.com/auru/unity-api/commit/00eacb5))
+* chore(package): update nyc to version 10.0.0 ([43ec440](https://github.com/auru/unity-api/commit/43ec440))
+* chore(package): update validate-commit-msg to version 2.10.1 ([58fb9d9](https://github.com/auru/unity-api/commit/58fb9d9))
+* chore(yarn): add  yarn.lock file ([dc50e4a](https://github.com/auru/unity-api/commit/dc50e4a))
+* ci(node): added node v7 ([8e62cdd](https://github.com/auru/unity-api/commit/8e62cdd))
+* fix: URL as APINamespace ([485c0d2](https://github.com/auru/unity-api/commit/485c0d2))
+
+
+
 <a name="1.0.4"></a>
 ## 1.0.4 (2016-11-21)
 
