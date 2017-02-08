@@ -4,17 +4,15 @@ import * as applyMiddleware from '../src/applyMiddleware';
 import callAPIMethod from '../src/callAPIMethod';
 import createAPI from '../src/createAPI';
 
-let stubApplyMiddleware;
-let stubCallAPIMethod;
 const boundCallAPIMethod = _ => _;
 test.beforeEach(t => {
-    stubCallAPIMethod = sinon.stub(callAPIMethod, 'bind');
-    stubCallAPIMethod.returns(boundCallAPIMethod);
-    stubApplyMiddleware = sinon.stub(applyMiddleware, 'default');
+    t.context.stubCallAPIMethod = sinon.stub(callAPIMethod, 'bind');
+    t.context.stubCallAPIMethod.returns(boundCallAPIMethod);
+    t.context.stubApplyMiddleware = sinon.stub(applyMiddleware, 'default');
 });
 test.afterEach.always(t => {
-    stubApplyMiddleware.restore();
-    stubCallAPIMethod.restore();
+    t.context.stubApplyMiddleware.restore();
+    t.context.stubCallAPIMethod.restore();
 });
 
 test('undefined resources', t => {
@@ -39,7 +37,7 @@ test('supports resource prefix insted of namespace', t => {
 
     API.user.get(1);
 
-    t.true(stubCallAPIMethod.calledWithExactly(
+    t.true(t.context.stubCallAPIMethod.calledWithExactly(
         null, 'https://example.com', {}, 'user-endpoint'
     ), 'correct arguments passed to callAPIMethod');
 });
@@ -81,25 +79,25 @@ test('general behaviour', t => {
     const methodOptions = { specific: 'option' };
     API.user.delete({ id: 1 }, methodOptions);
 
-    t.true(stubCallAPIMethod.calledOnce);
-    t.true(stubApplyMiddleware.calledOnce);
-    t.true(stubCallAPIMethod.calledBefore(stubApplyMiddleware));
-    t.true(stubCallAPIMethod.calledWithExactly(
+    t.true(t.context.stubCallAPIMethod.calledOnce);
+    t.true(t.context.stubApplyMiddleware.calledOnce);
+    t.true(t.context.stubCallAPIMethod.calledBefore(t.context.stubApplyMiddleware));
+    t.true(t.context.stubCallAPIMethod.calledWithExactly(
         null, 'https://example.com', {}, 'user'
     ));
 
-    t.is(stubApplyMiddleware.lastCall.args[0], boundCallAPIMethod, 'stubApplyMiddleware called with boundCallAPIMethod');
-    t.is(stubApplyMiddleware.lastCall.args[1], middleware, 'stubApplyMiddleware called with middleware');
-    t.is(stubApplyMiddleware.lastCall.args[2], methodOptions, 'stubApplyMiddleware called with methodOptions');
-    t.deepEqual(stubApplyMiddleware.lastCall.args[3], {
+    t.is(t.context.stubApplyMiddleware.lastCall.args[0], boundCallAPIMethod, 't.context.stubApplyMiddleware called with boundCallAPIMethod');
+    t.is(t.context.stubApplyMiddleware.lastCall.args[1], middleware, 't.context.stubApplyMiddleware called with middleware');
+    t.is(t.context.stubApplyMiddleware.lastCall.args[2], methodOptions, 't.context.stubApplyMiddleware called with methodOptions');
+    t.deepEqual(t.context.stubApplyMiddleware.lastCall.args[3], {
         path: ['delete', 1], options: { method: 'DELETE'}
-    }, 'stubApplyMiddleware called with correct apiParams');
-    t.is(stubApplyMiddleware.lastCall.args[4], 'user', 'stubApplyMiddleware called with correct resourceId');
-    t.is(stubApplyMiddleware.lastCall.args[5], 'delete', 'stubApplyMiddleware called with correct method');
+    }, 't.context.stubApplyMiddleware called with correct apiParams');
+    t.is(t.context.stubApplyMiddleware.lastCall.args[4], 'user', 't.context.stubApplyMiddleware called with correct resourceId');
+    t.is(t.context.stubApplyMiddleware.lastCall.args[5], 'delete', 't.context.stubApplyMiddleware called with correct method');
 
     API.user.delete({ id: 1 });
 
-    t.true(stubCallAPIMethod.calledTwice);
-    t.true(stubApplyMiddleware.calledTwice);
-    t.true(stubCallAPIMethod.calledBefore(stubApplyMiddleware));
+    t.true(t.context.stubCallAPIMethod.calledTwice);
+    t.true(t.context.stubApplyMiddleware.calledTwice);
+    t.true(t.context.stubCallAPIMethod.calledBefore(t.context.stubApplyMiddleware));
 });
