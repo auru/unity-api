@@ -86,14 +86,14 @@ test('general behaviour', t => {
         null, 'https://example.com', {}, 'user'
     ));
 
-    t.is(t.context.stubApplyMiddleware.lastCall.args[0], boundCallAPIMethod, 't.context.stubApplyMiddleware called with boundCallAPIMethod');
-    t.is(t.context.stubApplyMiddleware.lastCall.args[1], middleware, 't.context.stubApplyMiddleware called with middleware');
-    t.is(t.context.stubApplyMiddleware.lastCall.args[2], methodOptions, 't.context.stubApplyMiddleware called with methodOptions');
+    t.is(t.context.stubApplyMiddleware.lastCall.args[0], boundCallAPIMethod, 'applyMiddleware called with boundCallAPIMethod');
+    t.is(t.context.stubApplyMiddleware.lastCall.args[1], middleware, 'applyMiddleware called with middleware');
+    t.is(t.context.stubApplyMiddleware.lastCall.args[2], methodOptions, 'applyMiddleware called with methodOptions');
     t.deepEqual(t.context.stubApplyMiddleware.lastCall.args[3], {
         path: ['delete', 1], options: { method: 'DELETE'}
-    }, 't.context.stubApplyMiddleware called with correct apiParams');
-    t.is(t.context.stubApplyMiddleware.lastCall.args[4], 'user', 't.context.stubApplyMiddleware called with correct resourceId');
-    t.is(t.context.stubApplyMiddleware.lastCall.args[5], 'delete', 't.context.stubApplyMiddleware called with correct method');
+    }, 'applyMiddleware called with correct apiParams');
+    t.is(t.context.stubApplyMiddleware.lastCall.args[4], 'user', 'applyMiddleware called with correct resourceId');
+    t.is(t.context.stubApplyMiddleware.lastCall.args[5], 'delete', 'applyMiddleware called with correct method');
 
     API.user.delete({ id: 1 });
 
