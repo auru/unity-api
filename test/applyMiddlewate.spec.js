@@ -2,6 +2,8 @@ import test from 'ava';
 import sinon from 'sinon';
 import applyMiddleware from '../src/applyMiddleware';
 
+const noop = _ => _;
+
 test('applyTo is required', t => {
     t.throws(() => applyMiddleware());
 });
@@ -12,8 +14,7 @@ test('applyTo is not a function', t => {
 });
 
 test('no middleware returns default params', t => {
-    const applyTo = a => a;
-    const spyApplyTo = sinon.spy(applyTo);
+    const spyApplyTo = sinon.spy(noop);
 
     t.deepEqual(applyMiddleware(spyApplyTo), {});
     t.true(spyApplyTo.calledOnce);
@@ -21,7 +22,7 @@ test('no middleware returns default params', t => {
 });
 
 test('no functional middleware returns default params', t => {
-    const applyTo = sinon.spy(a => a);
+    const applyTo = sinon.spy(noop);
     const middlewares = [
         'test', undefined, {}, [], 123, null, NaN, /^/
     ];
@@ -32,8 +33,8 @@ test('no functional middleware returns default params', t => {
 });
 
 test('one middleware', t => {
-    const applyTo = sinon.spy(a => a);
-    const middleware = sinon.spy(a => a);
+    const applyTo = sinon.spy(noop);
+    const middleware = sinon.spy(noop);
 
     const options = { options: 'options' };
     const params = { params: 'params' };
@@ -53,9 +54,9 @@ test('one middleware', t => {
 });
 
 test('multiple middlewares', t => {
-    const applyTo = sinon.spy(a => a);
-    const middleware1 = sinon.spy(a => a);
-    const middleware2 = sinon.spy(a => a);
+    const applyTo = sinon.spy(noop);
+    const middleware1 = sinon.spy(noop);
+    const middleware2 = sinon.spy(noop);
 
     const options = { options: 'options' };
     const params = { params: 'params' };

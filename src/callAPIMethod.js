@@ -1,6 +1,5 @@
-import { format as formatURL } from 'url';
-import { uri } from 'unity-utils';
 import 'isomorphic-fetch';
+import { formatURL } from './utils';
 import APIError from './error';
 
 const defaults = {
@@ -14,23 +13,16 @@ const defaults = {
     }
 };
 
-export function getAPIPrefix(APINamespace) {
-    const reAbsolute = /^(\/|https?:\/\/)/ig;
-    return reAbsolute.test(APINamespace) ? APINamespace : '/' + APINamespace;
-}
+export default function callAPI(
+    APINamespace = defaults.APINamespace,
+    fetchOptions = defaults.fetchOptions,
+    namespace = '',
+    methodOptions = {}
+) {
 
-export function getFullPath(APINamespace, namespace, path=[]) {
-    path = [].concat(path);
-    return uri.join(getAPIPrefix(APINamespace), namespace, ...path).replace(':/', '://');
-}
+    const { path=[], query={}, options={}, method='json' } = methodOptions;
 
-function callAPI(APINamespace, fetchOptions, namespace = '', { path=[], query={}, options={}, method='json' }) {
-
-    APINamespace = APINamespace || defaults.APINamespace;
-
-    query = uri.query(query);
-
-    const url = formatURL({ query, pathname: getFullPath(APINamespace, namespace, path) });
+    const url = formatURL(APINamespace, namespace, path, query);
 
     return fetch(url, {...defaults.fetchOptions, ...fetchOptions, ...options})
         .then( result => {
@@ -41,7 +33,5 @@ function callAPI(APINamespace, fetchOptions, namespace = '', { path=[], query={}
 
             return result[method]();
         })
-        .catch( error => (error instanceof Error ? error : new Error(error)));
+        .catch( error => error);
 }
-
-export default callAPI;
