@@ -1,8 +1,8 @@
 const createShortcut = method => ({ options = {}, ...rest} = {}) => ({
     ...rest,
     options: {
-        ...options,
-        method
+        method,
+        ...options
     }
 });
 

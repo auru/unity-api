@@ -80,7 +80,7 @@ test('should add method even when nothing is passed', t => {
     t.deepEqual(result, { options: { method: 'GET'} });
 });
 
-test('should take precedence over passed params', t => {
+test('should not take precedence over passed params', t => {
     const result = PUT({ options: { method: 'POST' } });
-    t.deepEqual(result, { options: { method: 'PUT'} });
+    t.deepEqual(result, { options: { method: 'POST'} });
 });
