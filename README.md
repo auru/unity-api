@@ -11,12 +11,13 @@
 > REST-API helper, wrapped around `fetch`.
 
 # Table of Contents
-  * [Installation](#installation)
-  * [API](#api)
-  * [Usage](#usage)
-  * [Example](#example)
-  * [Contributing](#contributing)
-  * [License](#license)
+
+* [Installation](#installation)
+* [API](#api)
+* [Usage](#usage)
+* [Example](#example)
+* [Contributing](#contributing)
+* [License](#license)
 
 # Installation
 
@@ -66,32 +67,38 @@ Query-like object.
 
 Method to be called on `fetch`'s response.
 
+Alternatively you can use provided shortcuts for [every HTTP method](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)
+
 **Example:**
 ```js
+import { GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH } from '../src/shortcuts';
+
 const userResource = {
   namespace: 'user',
 
   methods: {
-    
     // id = 1, extanted = true
-    // GET: /api/user/get/1?extended=true
-    get: ({ id, extended }) => ({ path: ['get', id], query: { extended: !!extended } }),
-    
-    // POST: /api/user/edit
+    // GET: /api/user/1?extended=true
+    get: ({ id, extended }) => ({ path: [id], query: { extended: !!extended } }),
+
+    // POST: /api/user/1/edit
     save: ({ id, firstname, lastname }) => {
-            const formData = new FormData();
+        const formData = new FormData();
 
-            formData.append('firstname', firstname);
-            formData.append('lastname', lastname);
+        formData.append('firstname', firstname);
+        formData.append('lastname', lastname);
 
-            return {
-                path: 'edit',
-                options: {
-                    method: 'POST',
-                    body: formData
-                }
-            };
-        }
+        return {
+            path: [id, 'edit'],
+            options: {
+                method: 'POST',
+                body: formData
+            }
+        };
+    },
+
+    // DELETE: /api/user/1
+    delete: ({ id }) => DELETE({ path: [id] })
   }
 }
 ```
