@@ -26,12 +26,16 @@ export default function callAPI(
 
     return fetch(url, {...defaults.fetchOptions, ...fetchOptions, ...options})
         .then( result => {
+            const promiseCallback = result.body ? result[method]() : new Promise(resolve => resolve(result.body));
 
-            if (!result.ok) {
-                throw new APIError(result.status, result.statusText);
+            if (result.ok) {
+                return promiseCallback;
             }
 
-            return result[method]();
+            return promiseCallback
+                .then( body => {
+                    throw new APIError(result.status, result.statusText, body);
+                });
         })
         .catch( error => error);
 }

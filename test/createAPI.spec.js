@@ -33,7 +33,7 @@ test('supports resource prefix insted of namespace', t => {
         }
     };
     const resources = { user };
-    const API = createAPI(resources, [], 'https://example.com');
+    const API = createAPI(resources, [], 'https://example.com', {});
 
     API.user.get(1);
 
@@ -65,7 +65,7 @@ test('general behaviour', t => {
 
     const middleware = [ _ => _, _ => _];
 
-    const API = createAPI(resources, middleware, 'https://example.com');
+    const API = createAPI(resources, middleware, 'https://example.com', {});
 
     t.deepEqual(Object.keys(API), ['user', 'project'], 'resources');
 
