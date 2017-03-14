@@ -13,9 +13,12 @@ const ResponseGood = new Response(
     }
 );
 
-const ResponseBad = new Response(null, {
-    status: 500
-});
+const ResponseBad = new Response(
+    null,
+    {
+        status: 500
+    }
+);
 
 test.serial('default params', async t => {
     fetchMock.get(matcher, {});
@@ -40,7 +43,6 @@ test.serial('200 reponse', async t => {
 
     fetchMock.restore();
 });
-
 
 test.serial('500 reponse', async t => {
     fetchMock.get(matcher, ResponseBad);
@@ -79,7 +81,7 @@ test.serial('fetch options', async t => {
         credentials: 'omit',
         method: 'POST',
         mode: 'cors'
-    }), 'correct options';
+    }, 'correct options');
     t.true(spyResponseGood.calledOnce);
 
     spyResponseGood.restore();

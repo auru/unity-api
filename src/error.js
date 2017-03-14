@@ -1,6 +1,7 @@
-function APIError(code, message) {
+function APIError(code, message, body) {
     this.code = code;
     this.message = (message || '');
+    this.body = body;
 }
 
 Object.setPrototypeOf(APIError.prototype, Error.prototype);

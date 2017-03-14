@@ -5,8 +5,8 @@ import applyMiddleware from './applyMiddleware';
 const createAPI = (
     resources = {},
     middleware = [],
-    APINamespace = '',
-    fetchOptions = {}
+    APINamespace,
+    fetchOptions
 ) => Object.keys(resources).reduce( (api, resourceId) => {
     api[resourceId] = Object.keys(resources[resourceId].methods)
         .reduce( (resource, method) => {
