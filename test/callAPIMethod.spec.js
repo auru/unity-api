@@ -60,12 +60,13 @@ test.serial('fetch options', async t => {
 
     const APINamespace = 'rest-api';
     const namespace = 'user';
-    const fetchOptions = { method: 'POST'};
+    const fetchOptions = { method: 'GET'};
     const methodOptions = {
         path: 'path',
         query: { edit: true },
         options: {
-            credentials: 'omit'
+            credentials: 'omit',
+            method: 'POST'
         },
         method: 'text'
     };
@@ -83,6 +84,22 @@ test.serial('fetch options', async t => {
         mode: 'cors'
     }, 'correct options');
     t.true(spyResponseGood.calledOnce);
+
+    const newMethodOptions = {
+        ...methodOptions,
+        headers: new Headers(),
+        body: 'body'
+    };
+    await callAPIMethod(APINamespace, fetchOptions, namespace, newMethodOptions);
+
+    t.deepEqual(fetchMock.lastOptions(matcher), {
+        cache: 'default',
+        credentials: 'omit',
+        method: 'POST',
+        mode: 'cors',
+        headers: newMethodOptions.headers,
+        body: newMethodOptions.body
+    }, 'correct options');
 
     spyResponseGood.restore();
     fetchMock.restore();
