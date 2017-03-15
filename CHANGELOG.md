@@ -1,3 +1,11 @@
+<a name="2.0.0"></a>
+# 2.0.0 (2017-03-15)
+
+* revert(version): 1.1.0 ([af6eec8](https://github.com/auru/unity-api/commit/af6eec8))
+* chore(package): update sinon to version 2.0.0 ([c25bc8c](https://github.com/auru/unity-api/commit/c25bc8c))
+
+
+
 <a name="1.0.5"></a>
 ## 1.0.5 (2017-02-08)
 
