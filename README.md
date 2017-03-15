@@ -67,11 +67,20 @@ Query-like object.
 
 Method to be called on `fetch`'s response.
 
+##### headers {Object|Headers}
+
+Additional headers to be sent to the server
+
+##### body {string|FormData}
+
+Requests's body
+
+
 Alternatively you can use provided shortcuts for [every HTTP method](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods)
 
 **Example:**
 ```js
-import { GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH } from '../src/shortcuts';
+import { GET, HEAD, POST, PUT, DELETE, CONNECT, OPTIONS, TRACE, PATCH } from 'unity-api';
 
 const userResource = {
   namespace: 'user',
@@ -88,13 +97,11 @@ const userResource = {
         formData.append('firstname', firstname);
         formData.append('lastname', lastname);
 
-        return {
+        return POST({
             path: [id, 'edit'],
-            options: {
-                method: 'POST',
-                body: formData
-            }
-        };
+            headers: { 'x-csrf-token': 'blah' }
+            body: formData
+        });
     },
 
     // DELETE: /api/user/1

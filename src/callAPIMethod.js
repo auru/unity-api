@@ -20,21 +20,29 @@ export default function callAPI(
     methodOptions = {}
 ) {
 
-    const { path=[], query={}, options={}, method='json' } = methodOptions;
+    const { path=[], query={}, options={}, method='json', headers, body } = methodOptions;
 
     const url = formatURL(APINamespace, namespace, path, query);
 
-    return fetch(url, {...defaults.fetchOptions, ...fetchOptions, ...options})
-        .then( result => {
-            const promiseCallback = result.body ? result[method]() : new Promise(resolve => resolve(result.body));
+    const accumulatedFetchOptions = {
+        ...defaults.fetchOptions,
+        ...fetchOptions,
+        ...options
+    };
+    if (headers) accumulatedFetchOptions.headers = headers;
+    if (body) accumulatedFetchOptions.body = body;
 
-            if (result.ok) {
-                return promiseCallback;
+    return fetch(url, accumulatedFetchOptions)
+        .then( response => {
+            const responseBodyPromise = response.body ? response[method]() : Promise.resolve(response.body);
+
+            if (response.ok) {
+                return responseBodyPromise;
             }
 
-            return promiseCallback
-                .then( body => {
-                    throw new APIError(result.status, result.statusText, body);
+            return responseBodyPromise
+                .then( responseBody => {
+                    throw new APIError(response.status, response.statusText, responseBody);
                 });
         })
         .catch( error => error);
