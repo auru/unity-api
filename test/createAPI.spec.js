@@ -33,12 +33,12 @@ test('supports resource prefix insted of namespace', t => {
         }
     };
     const resources = { user };
-    const API = createAPI(resources, [], 'https://example.com', {});
+    const API = createAPI(resources, [], 'https://example.com');
 
     API.user.get(1);
 
     t.true(t.context.stubCallAPIMethod.calledWithExactly(
-        null, 'https://example.com', {}, 'user-endpoint'
+        null, 'https://example.com', undefined, 'user-endpoint'
     ), 'correct arguments passed to callAPIMethod');
 });
 
@@ -65,7 +65,7 @@ test('general behaviour', t => {
 
     const middleware = [ _ => _, _ => _];
 
-    const API = createAPI(resources, middleware, 'https://example.com', {});
+    const API = createAPI(resources, middleware, 'https://example.com');
 
     t.deepEqual(Object.keys(API), ['user', 'project'], 'resources');
 
@@ -83,7 +83,7 @@ test('general behaviour', t => {
     t.true(t.context.stubApplyMiddleware.calledOnce);
     t.true(t.context.stubCallAPIMethod.calledBefore(t.context.stubApplyMiddleware));
     t.true(t.context.stubCallAPIMethod.calledWithExactly(
-        null, 'https://example.com', {}, 'user'
+        null, 'https://example.com', undefined, 'user'
     ));
 
     t.is(t.context.stubApplyMiddleware.lastCall.args[0], boundCallAPIMethod, 'applyMiddleware called with boundCallAPIMethod');
