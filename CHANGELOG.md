@@ -1,14 +1,3 @@
-<a name="1.1.0"></a>
-# 1.1.0 (2017-03-15)
-
-* perf(fetch): add content body, when throw Error ([7365a02](https://github.com/auru/unity-api/commit/7365a02))
-* chore(package): update babel-polyfill to version 6.23.0 (#16) ([9aa1a4e](https://github.com/auru/unity-api/commit/9aa1a4e))
-* feat: shortcuts for HTTP methods (#15) ([ec4a8d1](https://github.com/auru/unity-api/commit/ec4a8d1))
-* test: fix tests descriptions ([57c0dcc](https://github.com/auru/unity-api/commit/57c0dcc))
-* test: use t.context for shared vars ([4a10e03](https://github.com/auru/unity-api/commit/4a10e03))
-
-
-
 <a name="1.0.5"></a>
 ## 1.0.5 (2017-02-08)
 
@@ -47,6 +36,3 @@
 
 * chore(contributing): added commit hooks and documentation for contributing ([6ace186](https://github.com/auru/unity-api/commit/6ace186))
 * chore(contributing): added pre-commit hooks and docs on contributing ([8ba7f95](https://github.com/auru/unity-api/commit/8ba7f95))
-
-
-
