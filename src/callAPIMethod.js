@@ -33,17 +33,20 @@ export default function callAPI(
     if (body) accumulatedFetchOptions.body = body;
 
     return fetch(url, accumulatedFetchOptions)
-        .then( response => {
-            const responseBodyPromise = response.body ? response[method]() : Promise.resolve(response.body);
+        .then( response => response[method]()
+                .catch( () => {
+                    if (!response.ok) {
+                        throw new APIError(response.status, response.statusText);
+                    }
 
-            if (response.ok) {
-                return responseBodyPromise;
-            }
+                    return response.body || null;
+                })
+                .then( result => {
+                    if (!response.ok) {
+                        throw new APIError(response.status, response.statusText, result);
+                    }
 
-            return responseBodyPromise
-                .then( responseBody => {
-                    throw new APIError(response.status, response.statusText, responseBody);
-                });
-        })
+                    return result;
+                }))
         .catch( error => error);
 }

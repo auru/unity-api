@@ -6,14 +6,28 @@ import APIError from '../src/error';
 
 const matcher = '*';
 
-const ResponseGood = new Response(
+const Response200 = new Response(
     JSON.stringify({ sample: 'data'}),
     {
         status: 200
     }
 );
 
-const ResponseBad = new Response(
+const Response201 = new Response(
+    null,
+    {
+        status: 201
+    }
+);
+
+const Response400 = new Response(
+    JSON.stringify({ sample: 'not found'}),
+    {
+        status: 400
+    }
+);
+
+const Response500 = new Response(
     null,
     {
         status: 500
@@ -36,7 +50,7 @@ test.serial('default params', async t => {
 });
 
 test.serial('200 reponse', async t => {
-    fetchMock.get(matcher, ResponseGood);
+    fetchMock.get(matcher, Response200);
     const result = await callAPIMethod();
 
     t.deepEqual(result, { sample: 'data' }, 'correct response body');
@@ -44,8 +58,28 @@ test.serial('200 reponse', async t => {
     fetchMock.restore();
 });
 
+test.serial('201 reponse', async t => {
+    fetchMock.get(matcher, Response201);
+    const result = await callAPIMethod();
+
+    t.is(result, null, 'correct response body');
+
+    fetchMock.restore();
+});
+
+test.serial('400 reponse', async t => {
+    fetchMock.get(matcher, Response400);
+
+    const result = await callAPIMethod();
+
+    t.true(result instanceof Error, 'instance of Error');
+    t.true(result instanceof APIError, 'instance of APIError');
+
+    fetchMock.restore();
+});
+
 test.serial('500 reponse', async t => {
-    fetchMock.get(matcher, ResponseBad);
+    fetchMock.get(matcher, Response500);
 
     const result = await callAPIMethod();
 
@@ -56,7 +90,7 @@ test.serial('500 reponse', async t => {
 });
 
 test.serial('fetch options', async t => {
-    fetchMock.post(matcher, ResponseGood);
+    fetchMock.post(matcher, Response200);
 
     const APINamespace = 'rest-api';
     const namespace = 'user';
@@ -70,7 +104,7 @@ test.serial('fetch options', async t => {
         },
         method: 'text'
     };
-    const spyResponseGood = sinon.spy(ResponseGood, 'text');
+    const spyResponse200 = sinon.spy(Response200, 'text');
 
     fetchMock.post(matcher, {});
 
@@ -83,7 +117,7 @@ test.serial('fetch options', async t => {
         method: 'POST',
         mode: 'cors'
     }, 'correct options');
-    t.true(spyResponseGood.calledOnce);
+    t.true(spyResponse200.calledOnce);
 
     const newMethodOptions = {
         ...methodOptions,
@@ -101,12 +135,12 @@ test.serial('fetch options', async t => {
         body: newMethodOptions.body
     }, 'correct options');
 
-    spyResponseGood.restore();
+    spyResponse200.restore();
     fetchMock.restore();
 });
 
 test.serial('unsupported Response method', async t => {
-    fetchMock.get(matcher, ResponseGood);
+    fetchMock.get(matcher, Response200);
 
     const APINamespace = 'rest-api';
     const namespace = 'user';
