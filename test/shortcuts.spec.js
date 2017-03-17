@@ -15,7 +15,7 @@ const dummy = {
     path: ['path', 'to', 'resource'],
     query: { param: 'value' },
     options: { credentials: 'include' },
-    method: 'text'
+    type: 'text'
 };
 
 test('should set correct HTTP method', t => {
@@ -23,55 +23,55 @@ test('should set correct HTTP method', t => {
         path: ['path', 'to', 'resource'],
         query: { param: 'value' },
         options: { credentials: 'include', method: 'GET' },
-        method: 'text'
+        type: 'text'
     }, 'GET');
     t.deepEqual(HEAD(dummy), {
         path: ['path', 'to', 'resource'],
         query: { param: 'value' },
         options: { credentials: 'include', method: 'HEAD' },
-        method: 'text'
+        type: 'text'
     }, 'HEAD');
     t.deepEqual(POST(dummy), {
         path: ['path', 'to', 'resource'],
         query: { param: 'value' },
         options: { credentials: 'include', method: 'POST' },
-        method: 'text'
+        type: 'text'
     }, 'POST');
     t.deepEqual(PUT(dummy), {
         path: ['path', 'to', 'resource'],
         query: { param: 'value' },
         options: { credentials: 'include', method: 'PUT' },
-        method: 'text'
+        type: 'text'
     }, 'PUT');
     t.deepEqual(DELETE(dummy), {
         path: ['path', 'to', 'resource'],
         query: { param: 'value' },
         options: { credentials: 'include', method: 'DELETE' },
-        method: 'text'
+        type: 'text'
     }, 'DELETE');
     t.deepEqual(CONNECT(dummy), {
         path: ['path', 'to', 'resource'],
         query: { param: 'value' },
         options: { credentials: 'include', method: 'CONNECT' },
-        method: 'text'
+        type: 'text'
     }, 'CONNECT');
     t.deepEqual(OPTIONS(dummy), {
         path: ['path', 'to', 'resource'],
         query: { param: 'value' },
         options: { credentials: 'include', method: 'OPTIONS' },
-        method: 'text'
+        type: 'text'
     }, 'OPTIONS');
     t.deepEqual(TRACE(dummy), {
         path: ['path', 'to', 'resource'],
         query: { param: 'value' },
         options: { credentials: 'include', method: 'TRACE' },
-        method: 'text'
+        type: 'text'
     }, 'TRACE');
     t.deepEqual(PATCH(dummy), {
         path: ['path', 'to', 'resource'],
         query: { param: 'value' },
         options: { credentials: 'include', method: 'PATCH' },
-        method: 'text'
+        type: 'text'
     }, 'PATCH');
 });
 

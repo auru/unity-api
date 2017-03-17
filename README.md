@@ -62,10 +62,12 @@ Query-like object.
 
 `fetch` [options](https://developer.mozilla.org/en-US/docs/Web/API/GlobalFetch/fetch#Parameters).
 
-##### method {string} *Optional*
+##### type {string} *Optional*
 **Default:** `'json'`
 
-Method to be called on `fetch`'s response.
+**Alias:** `method`
+
+Type of reponse data / method to be called on `fetch`'s response (ex: `'json'`, `'text'`, `'blob'`) 
 
 ##### headers {Object|Headers}
 
@@ -187,6 +189,7 @@ const resources = {
     methods: {
       get: ({ id }) => ({ path: id }),
       delete: ({ id }) => ({ path: id, options: { method: 'DELETE' } }),
+      getAsText: ({ id }) => ({ path: id, type: 'text' }),
     }
   }
 }
