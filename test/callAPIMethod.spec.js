@@ -62,7 +62,7 @@ test.serial('201 reponse', async t => {
     fetchMock.get(matcher, Response201);
     const result = await callAPIMethod();
 
-    t.is(result, null, 'correct response body');
+    t.is(result, null, 'incorrect response body');
 
     fetchMock.restore();
 });
@@ -74,6 +74,7 @@ test.serial('400 reponse', async t => {
 
     t.true(result instanceof Error, 'instance of Error');
     t.true(result instanceof APIError, 'instance of APIError');
+    t.deepEqual(result.body, { sample: 'not found'}, 'correct error body');
 
     fetchMock.restore();
 });
