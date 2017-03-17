@@ -1,4 +1,11 @@
-export default function applyMiddleware(applyTo, middlewares = [], options = {}, params = {}, resourceId = '', method = '') {
+export default function applyMiddleware(
+    applyTo,
+    middlewares = [],
+    options = {},
+    params = {},
+    resourceId = '',
+    type = ''
+) {
 
     middlewares = [].concat(middlewares).filter(func => typeof func === 'function');
 
@@ -10,10 +17,10 @@ export default function applyMiddleware(applyTo, middlewares = [], options = {},
 
         const next = index === middlewares.length - 1
             ? prev.bind(null, params)
-            : prev.bind(null, options, params, resourceId, method);
+            : prev.bind(null, options, params, resourceId, type);
 
         return index === 0
-            ? middleware(next)(options, params, resourceId, method)
+            ? middleware(next)(options, params, resourceId, type)
             : middleware(next);
     }, applyTo);
 

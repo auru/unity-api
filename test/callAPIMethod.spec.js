@@ -105,7 +105,7 @@ test.serial('fetch options', async t => {
         },
         method: 'text'
     };
-    const spyResponse200 = sinon.spy(Response200, 'text');
+    const spyResponse200Text = sinon.spy(Response200, 'text');
 
     fetchMock.post(matcher, {});
 
@@ -118,15 +118,18 @@ test.serial('fetch options', async t => {
         method: 'POST',
         mode: 'cors'
     }, 'correct options');
-    t.true(spyResponse200.calledOnce);
+    t.true(spyResponse200Text.calledOnce);
 
     const newMethodOptions = {
         ...methodOptions,
+        type: 'json',
         headers: new Headers(),
         body: 'body'
     };
+    const spyResponse200Json = sinon.spy(Response200, 'json');
     await callAPIMethod(APINamespace, fetchOptions, namespace, newMethodOptions);
 
+    t.true(spyResponse200Json.calledOnce);
     t.deepEqual(fetchMock.lastOptions(matcher), {
         cache: 'default',
         credentials: 'omit',
@@ -136,7 +139,8 @@ test.serial('fetch options', async t => {
         body: newMethodOptions.body
     }, 'correct options');
 
-    spyResponse200.restore();
+    spyResponse200Text.restore();
+    spyResponse200Json.restore();
     fetchMock.restore();
 });
 

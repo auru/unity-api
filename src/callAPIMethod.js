@@ -20,7 +20,15 @@ export default function callAPI(
     methodOptions = {}
 ) {
 
-    const { path=[], query={}, options={}, method='json', headers, body } = methodOptions;
+    const {
+        path=[],
+        query={},
+        options={},
+        type,
+        method='json',
+        headers,
+        body
+    } = methodOptions;
 
     const url = formatURL(APINamespace, namespace, path, query);
 
@@ -33,7 +41,7 @@ export default function callAPI(
     if (body) accumulatedFetchOptions.body = body;
 
     return fetch(url, accumulatedFetchOptions)
-        .then( response => response[method]()
+        .then( response => response[type || method]()
                 .catch( () => {
                     if (!response.ok) throw new APIError(response.status, response.statusText);
 
