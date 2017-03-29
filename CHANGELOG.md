@@ -1,3 +1,14 @@
+<a name="2.0.1"></a>
+## 2.0.1 (2017-03-29)
+
+* fix(callAPIMethod): bug ff & safari (#26) ([15c3065](https://github.com/auru/unity-api/commit/15c3065))
+* feat(fetch): `headers` and `body` fetch options shortcuts ([0d946d1](https://github.com/auru/unity-api/commit/0d946d1))
+* 2.0.0 ([4f0ffda](https://github.com/auru/unity-api/commit/4f0ffda))
+* revert(version): 1.1.0 ([b722313](https://github.com/auru/unity-api/commit/b722313))
+* chore(package): update sinon to version 2.0.0 ([c25bc8c](https://github.com/auru/unity-api/commit/c25bc8c))
+
+
+
 <a name="2.0.0"></a>
 # 2.0.0 (2017-03-15)
 
