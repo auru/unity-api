@@ -65,7 +65,7 @@
     "eslint": "^3.14.0",
     "eslint-plugin-ava": "^4.0.0",
     "fetch-mock": "^5.5.0",
-    "husky": "^0.13.0",
+    "husky": "^0.14.0",
     "nyc": "^10.0.0",
     "rimraf": "^2.5.4",
     "sinon": "^2.0.0",
