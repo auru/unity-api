@@ -1,3 +1,15 @@
+<a name="2.1.0"></a>
+# 2.1.0 (2017-10-23)
+
+* chore: update dependencies ([e7d8a67](https://github.com/auru/unity-api/commit/e7d8a67))
+* chore(package): update ava to version 0.19.0 ([6042ae5](https://github.com/auru/unity-api/commit/6042ae5))
+* chore(package): update ava to version 0.20.0 ([4e2cb10](https://github.com/auru/unity-api/commit/4e2cb10))
+* chore(package): update nyc to version 11.0.2 ([06f4e08](https://github.com/auru/unity-api/commit/06f4e08))
+* chore(package): update sinon to version 3.0.0 ([1c4e96f](https://github.com/auru/unity-api/commit/1c4e96f))
+* feat(fetch): alias fetch response `method` to `type` ([c6fad43](https://github.com/auru/unity-api/commit/c6fad43))
+
+
+
 <a name="2.0.1"></a>
 ## 2.0.1 (2017-03-29)
 
