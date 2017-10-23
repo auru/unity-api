@@ -42,15 +42,15 @@ export default function callAPI(
 
     return fetch(url, accumulatedFetchOptions)
         .then( response => response[type || method]()
-                .catch( () => {
-                    if (!response.ok) throw new APIError(response.status, response.statusText);
+            .catch( () => {
+                if (!response.ok) throw new APIError(response.status, response.statusText);
 
-                    return response.body || null;
-                })
-                .then( result => {
-                    if (!response.ok) throw new APIError(response.status, response.statusText, result);
+                return response.body || null;
+            })
+            .then( result => {
+                if (!response.ok) throw new APIError(response.status, response.statusText, result);
 
-                    return result;
-                }))
+                return result;
+            }))
         .catch( error => error);
 }
