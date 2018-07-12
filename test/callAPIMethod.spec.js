@@ -7,7 +7,7 @@ import APIError from '../src/error';
 const matcher = '*';
 
 const Response200 = new Response(
-    JSON.stringify({ sample: 'data'}),
+    { sample: 'data'},
     {
         status: 200
     }
@@ -21,7 +21,7 @@ const Response201 = new Response(
 );
 
 const Response400 = new Response(
-    JSON.stringify({ sample: 'not found'}),
+    { sample: 'not found'},
     {
         status: 400
     }
@@ -172,13 +172,13 @@ test.serial('returns full response object', async t => {
 
     const APINamespace = 'rest-api';
     const namespace = 'user';
-    const fetchOptions = { method: 'POST'};
+    const fetchOptions = { method: 'POST' };
     const methodOptions = { path: 'path' };
     const responseOptions = { fullResponse: true };
 
     const result = await callAPIMethod(APINamespace, namespace, fetchOptions, methodOptions, responseOptions);
     const mockedResult = {
-        body: '{"sample":"data"}',
+        body: { sample: 'data' },
         bodyUsed: true,
         headers: (new Response()).headers,
         ok: true,

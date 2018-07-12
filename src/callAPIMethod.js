@@ -47,7 +47,7 @@ export default function callAPI(
     return fetch(url, accumulatedFetchOptions)
         .then( response => response[type || method]()
             .catch( () => {
-                if (!response.ok) throw new APIError(response.status, response.statusText);
+                if (!response.ok) throw new APIError(response.status, response.statusText, response.body);
 
                 return response.body || null;
             })
@@ -65,15 +65,14 @@ export default function callAPI(
                         'type',
                         'url',
                         'useFinalURL',
-                        'bodyUsed',
-                        'body'
+                        'bodyUsed'
                     ].reduce((res, key) => {
                         res[key] = response[key];
 
                         return res;
                     }, {});
 
-                    return Object.assign({}, writableResponse, { body: result });
+                    return { ...writableResponse, ...{ body: result } };
                 }
 
                 return result;
