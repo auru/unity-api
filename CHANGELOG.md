@@ -1,3 +1,15 @@
+## 2.2.0 (2018-07-12)
+
+* chore: remove package-lock.json ([77f69d2](https://github.com/auru/unity-api/commit/77f69d2))
+* chore: remove yarn.lock and unused nodes from travis ([88c84b6](https://github.com/auru/unity-api/commit/88c84b6))
+* chore: set node engine >= 8.10.0 ([900039c](https://github.com/auru/unity-api/commit/900039c))
+* chore: update supported node to 8 more ([bd6194c](https://github.com/auru/unity-api/commit/bd6194c))
+* test(callAPIMethod): add tests for error response with fullResponse flag ([b4a54ee](https://github.com/auru/unity-api/commit/b4a54ee))
+* fix: pass body to APIError ([85c413a](https://github.com/auru/unity-api/commit/85c413a))
+* feat(response): add configuration to return only body or full response ([120efdd](https://github.com/auru/unity-api/commit/120efdd))
+
+
+
 <a name="2.1.0"></a>
 # 2.1.0 (2017-10-23)
 
