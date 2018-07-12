@@ -90,6 +90,41 @@ test.serial('500 reponse', async t => {
     fetchMock.restore();
 });
 
+test.serial('400 reponse with fullResponse option', async t => {
+    fetchMock.get(matcher, Response400);
+
+    const APINamespace = 'rest-api';
+    const namespace = 'user';
+    const fetchOptions = { method: 'POST' };
+    const methodOptions = { path: 'path' };
+    const responseOptions = { fullResponse: true };
+
+    const result = await callAPIMethod(APINamespace, namespace, fetchOptions, methodOptions, responseOptions);
+
+    t.true(result instanceof Error, 'instance of Error');
+    t.true(result instanceof APIError, 'instance of APIError');
+    t.deepEqual(result.body, { sample: 'not found'}, 'correct error body');
+
+    fetchMock.restore();
+});
+
+test.serial('500 reponse with fullResponse option', async t => {
+    fetchMock.get(matcher, Response500);
+
+    const APINamespace = 'rest-api';
+    const namespace = 'user';
+    const fetchOptions = { method: 'POST' };
+    const methodOptions = { path: 'path' };
+    const responseOptions = { fullResponse: true };
+
+    const result = await callAPIMethod(APINamespace, namespace, fetchOptions, methodOptions, responseOptions);
+
+    t.true(result instanceof Error, 'instance of Error');
+    t.true(result instanceof APIError, 'instance of APIError');
+
+    fetchMock.restore();
+});
+
 test.serial('fetch options', async t => {
     fetchMock.post(matcher, Response200, { overwriteRoutes: false });
 
