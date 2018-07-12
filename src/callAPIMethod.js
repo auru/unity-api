@@ -10,6 +10,9 @@ const defaults = {
         mode: 'cors',
         cache: 'default',
         credentials: 'include'
+    },
+    responseOptions: {
+        fullResponse: false
     }
 };
 
@@ -17,7 +20,8 @@ export default function callAPI(
     APINamespace = defaults.APINamespace,
     fetchOptions = defaults.fetchOptions,
     namespace = '',
-    methodOptions = {}
+    methodOptions = {},
+    responseOptions = defaults.responseOptions
 ) {
 
     const {
@@ -43,12 +47,33 @@ export default function callAPI(
     return fetch(url, accumulatedFetchOptions)
         .then( response => response[type || method]()
             .catch( () => {
-                if (!response.ok) throw new APIError(response.status, response.statusText);
+                if (!response.ok) throw new APIError(response.status, response.statusText, response.body);
 
                 return response.body || null;
             })
             .then( result => {
                 if (!response.ok) throw new APIError(response.status, response.statusText, result);
+
+                if (responseOptions.fullResponse) {
+                    // https://developer.mozilla.org/en-US/docs/Web/API/Response
+                    const writableResponse = [
+                        'headers',
+                        'ok',
+                        'redirected',
+                        'status',
+                        'statusText',
+                        'type',
+                        'url',
+                        'useFinalURL',
+                        'bodyUsed'
+                    ].reduce((res, key) => {
+                        res[key] = response[key];
+
+                        return res;
+                    }, {});
+
+                    return { ...writableResponse, ...{ body: result } };
+                }
 
                 return result;
             }))

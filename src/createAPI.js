@@ -10,13 +10,14 @@ const createAPI = (
 ) => Object.keys(resources).reduce( (api, resourceId) => {
     api[resourceId] = Object.keys(resources[resourceId].methods)
         .reduce( (resource, method) => {
-            resource[method] = (params, methodOptions) => {
+            resource[method] = (params, methodOptions, responseOptions) => {
                 const apiParams = resources[resourceId].methods[method](params);
                 const boundCallAPIMethod = callAPIMethod.bind(
                     null,
                     APINamespace,
                     fetchOptions,
-                    (resources[resourceId].namespace || resources[resourceId].prefix)
+                    (resources[resourceId].namespace || resources[resourceId].prefix),
+                    responseOptions
                 );
                 return applyMiddleware(
                     boundCallAPIMethod,

@@ -7,7 +7,7 @@ import APIError from '../src/error';
 const matcher = '*';
 
 const Response200 = new Response(
-    JSON.stringify({ sample: 'data'}),
+    { sample: 'data'},
     {
         status: 200
     }
@@ -21,7 +21,7 @@ const Response201 = new Response(
 );
 
 const Response400 = new Response(
-    JSON.stringify({ sample: 'not found'}),
+    { sample: 'not found'},
     {
         status: 400
     }
@@ -90,8 +90,43 @@ test.serial('500 reponse', async t => {
     fetchMock.restore();
 });
 
+test.serial('400 reponse with fullResponse option', async t => {
+    fetchMock.get(matcher, Response400);
+
+    const APINamespace = 'rest-api';
+    const namespace = 'user';
+    const fetchOptions = { method: 'POST' };
+    const methodOptions = { path: 'path' };
+    const responseOptions = { fullResponse: true };
+
+    const result = await callAPIMethod(APINamespace, namespace, fetchOptions, methodOptions, responseOptions);
+
+    t.true(result instanceof Error, 'instance of Error');
+    t.true(result instanceof APIError, 'instance of APIError');
+    t.deepEqual(result.body, { sample: 'not found'}, 'correct error body');
+
+    fetchMock.restore();
+});
+
+test.serial('500 reponse with fullResponse option', async t => {
+    fetchMock.get(matcher, Response500);
+
+    const APINamespace = 'rest-api';
+    const namespace = 'user';
+    const fetchOptions = { method: 'POST' };
+    const methodOptions = { path: 'path' };
+    const responseOptions = { fullResponse: true };
+
+    const result = await callAPIMethod(APINamespace, namespace, fetchOptions, methodOptions, responseOptions);
+
+    t.true(result instanceof Error, 'instance of Error');
+    t.true(result instanceof APIError, 'instance of APIError');
+
+    fetchMock.restore();
+});
+
 test.serial('fetch options', async t => {
-    fetchMock.post(matcher, Response200);
+    fetchMock.post(matcher, Response200, { overwriteRoutes: false });
 
     const APINamespace = 'rest-api';
     const namespace = 'user';
@@ -107,7 +142,7 @@ test.serial('fetch options', async t => {
     };
     const spyResponse200Text = sinon.spy(Response200, 'text');
 
-    fetchMock.post(matcher, {});
+    fetchMock.post(matcher, {}, { overwriteRoutes: false });
 
     await callAPIMethod(APINamespace, fetchOptions, namespace, methodOptions);
 
@@ -163,6 +198,37 @@ test.serial('unsupported Response method', async t => {
     t.true(result instanceof Error);
     t.true(result instanceof TypeError);
     t.false(result instanceof APIError);
+
+    fetchMock.restore();
+});
+
+test.serial('returns full response object', async t => {
+    fetchMock.get(matcher, Response200);
+
+    const APINamespace = 'rest-api';
+    const namespace = 'user';
+    const fetchOptions = { method: 'POST' };
+    const methodOptions = { path: 'path' };
+    const responseOptions = { fullResponse: true };
+
+    const result = await callAPIMethod(APINamespace, namespace, fetchOptions, methodOptions, responseOptions);
+    const mockedResult = {
+        body: { sample: 'data' },
+        bodyUsed: true,
+        headers: (new Response()).headers,
+        ok: true,
+        redirected: undefined,
+        status: 200,
+        statusText: 'OK',
+        type: undefined,
+        url: undefined,
+        useFinalURL: undefined
+    };
+
+    t.false(result instanceof Error);
+    t.false(result instanceof TypeError);
+    t.false(result instanceof APIError);
+    t.deepEqual(result, mockedResult, 'correct response');
 
     fetchMock.restore();
 });

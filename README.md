@@ -173,7 +173,20 @@ API-wide default `fetch` [options](https://developer.mozilla.org/en-US/docs/Web/
 # Usage
 
 You can call your API methods like so: 
-`API[resource][method](methodParams, middlewareOptions)`
+`API[resource][method](methodParams, middlewareOptions, responseOptions)`
+
+# responseOptions {Object} *Optional*
+
+**Default:**
+
+```js
+{
+  fullResponse: false
+}
+```
+
+If `fullResponse` is `true`, it will return [Response like structured](https://developer.mozilla.org/en-US/docs/Web/API/Response) object with parsed body.
+
 
 # Example
 
