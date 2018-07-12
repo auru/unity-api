@@ -38,7 +38,7 @@ test('supports resource prefix insted of namespace', t => {
     API.user.get(1);
 
     t.true(t.context.stubCallAPIMethod.calledWithExactly(
-        null, 'https://example.com', undefined, 'user-endpoint'
+        null, 'https://example.com', undefined, 'user-endpoint', undefined
     ), 'correct arguments passed to callAPIMethod');
 });
 
@@ -77,18 +77,20 @@ test('general behaviour', t => {
     });
 
     const methodOptions = { specific: 'option' };
-    API.user.delete({ id: 1 }, methodOptions);
+    const responseOptions = { fullResponse: false };
+    API.user.delete({ id: 1 }, methodOptions, responseOptions);
 
     t.true(t.context.stubCallAPIMethod.calledOnce);
     t.true(t.context.stubApplyMiddleware.calledOnce);
     t.true(t.context.stubCallAPIMethod.calledBefore(t.context.stubApplyMiddleware));
     t.true(t.context.stubCallAPIMethod.calledWithExactly(
-        null, 'https://example.com', undefined, 'user'
+        null, 'https://example.com', undefined, 'user', responseOptions
     ));
 
     t.is(t.context.stubApplyMiddleware.lastCall.args[0], boundCallAPIMethod, 'applyMiddleware called with boundCallAPIMethod');
     t.is(t.context.stubApplyMiddleware.lastCall.args[1], middleware, 'applyMiddleware called with middleware');
     t.is(t.context.stubApplyMiddleware.lastCall.args[2], methodOptions, 'applyMiddleware called with methodOptions');
+    // t.is(t.context.stubApplyMiddleware.lastCall.args[3], responseOptions, 'applyMiddleware called with responseOptions');
     t.deepEqual(t.context.stubApplyMiddleware.lastCall.args[3], {
         path: ['delete', 1], options: { method: 'DELETE'}
     }, 'applyMiddleware called with correct apiParams');
