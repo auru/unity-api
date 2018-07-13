@@ -20,8 +20,8 @@ export default function callAPI(
     APINamespace = defaults.APINamespace,
     fetchOptions = defaults.fetchOptions,
     namespace = '',
-    methodOptions = {},
-    responseOptions = defaults.responseOptions
+    responseOptions = defaults.responseOptions,
+    methodOptions = {}
 ) {
 
     const {

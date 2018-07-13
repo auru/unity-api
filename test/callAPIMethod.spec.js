@@ -141,10 +141,11 @@ test.serial('fetch options', async t => {
         method: 'text'
     };
     const spyResponse200Text = sinon.spy(Response200, 'text');
+    const responseOptions = {};
 
     fetchMock.post(matcher, {}, { overwriteRoutes: false });
 
-    await callAPIMethod(APINamespace, fetchOptions, namespace, methodOptions);
+    await callAPIMethod(APINamespace, fetchOptions, namespace, responseOptions, methodOptions);
 
     t.is(fetchMock.lastUrl(matcher), '/rest-api/user/path?edit=true', 'correct url');
     t.deepEqual(fetchMock.lastOptions(matcher), {
@@ -162,7 +163,7 @@ test.serial('fetch options', async t => {
         body: 'body'
     };
     const spyResponse200Json = sinon.spy(Response200, 'json');
-    await callAPIMethod(APINamespace, fetchOptions, namespace, newMethodOptions);
+    await callAPIMethod(APINamespace, fetchOptions, namespace, responseOptions, newMethodOptions);
 
     t.true(spyResponse200Json.calledOnce);
     t.deepEqual(fetchMock.lastOptions(matcher), {
@@ -192,8 +193,9 @@ test.serial('unsupported Response method', async t => {
         },
         method: 'undefined'
     };
+    const responseOptions = {};
 
-    const result = await callAPIMethod(APINamespace, namespace, fetchOptions, methodOptions);
+    const result = await callAPIMethod(APINamespace, namespace, fetchOptions, responseOptions, methodOptions);
 
     t.true(result instanceof Error);
     t.true(result instanceof TypeError);
@@ -211,7 +213,7 @@ test.serial('returns full response object', async t => {
     const methodOptions = { path: 'path' };
     const responseOptions = { fullResponse: true };
 
-    const result = await callAPIMethod(APINamespace, namespace, fetchOptions, methodOptions, responseOptions);
+    const result = await callAPIMethod(APINamespace, namespace, fetchOptions, responseOptions, methodOptions);
     const mockedResult = {
         body: { sample: 'data' },
         bodyUsed: true,
