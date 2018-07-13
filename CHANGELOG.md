@@ -1,3 +1,9 @@
+## <small>2.2.1 (2018-07-13)</small>
+
+* fix: callAPI params order ([dc468b8](https://github.com/auru/unity-api/commit/dc468b8))
+
+
+
 ## 2.2.0 (2018-07-12)
 
 * chore: remove package-lock.json ([77f69d2](https://github.com/auru/unity-api/commit/77f69d2))
