@@ -26,7 +26,7 @@ npm i --save unity-api
 ```
 
 # API
-## createAPI(resources, middleware, namespace, fetchOptions);
+## createAPI(resources, middleware, namespace, fetchOptions, cancelNamespace);
 
 **Returns:** {Object}
 
@@ -169,6 +169,12 @@ Usually you would want to proxy api calls from the SPA to the backend using some
 ```
 
 API-wide default `fetch` [options](https://developer.mozilla.org/en-US/docs/Web/API/GlobalFetch/fetch#Parameters).
+
+### cancelNamespace {String} *Optional*
+
+**Default:** `'CANCEL'`
+
+You can call `API[resource][method](methodParams, middlewareOptions, responseOptions)[cancelNamespace]` to cancel fetch call.
 
 # Usage
 

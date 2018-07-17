@@ -1,6 +1,7 @@
 import test from 'ava';
 import sinon from 'sinon';
 import applyMiddleware from '../src/applyMiddleware';
+import { abort } from '../src/callAPIMethod';
 
 const noop = _ => _;
 
@@ -40,8 +41,9 @@ test('one middleware', t => {
     const params = { params: 'params' };
     const resourceId = 'resourceId';
     const method = 'method';
+    const cancelNamespace = 'CANCEL';
 
-    t.deepEqual(applyMiddleware(applyTo, [ middleware ], options, params, resourceId, method), params);
+    t.deepEqual(applyMiddleware(applyTo, [ middleware ], options, params, resourceId, method), params, cancelNamespace);
     t.true(applyTo.calledOnce);
     t.true(applyTo.calledWithExactly(params, options, params, resourceId, method));
     t.true(middleware.calledOnce);

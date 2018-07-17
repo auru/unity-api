@@ -1,6 +1,7 @@
 import test from 'ava';
 import sinon from 'sinon';
 import fetchMock from 'fetch-mock';
+import { AbortController } from 'abortcontroller-polyfill/dist/cjs-ponyfill';
 import callAPIMethod from '../src/callAPIMethod';
 import APIError from '../src/error';
 
@@ -39,7 +40,12 @@ test.serial('default params', async t => {
     await callAPIMethod();
 
     t.is(fetchMock.lastUrl(matcher), '/api', 'correct url');
-    t.deepEqual(fetchMock.lastOptions(matcher), {
+
+    const result = fetchMock.lastOptions(matcher);
+
+    delete result.signal;
+
+    t.deepEqual(result, {
         cache: 'default',
         credentials: 'include',
         method: 'GET',
@@ -148,6 +154,11 @@ test.serial('fetch options', async t => {
     await callAPIMethod(APINamespace, fetchOptions, namespace, responseOptions, methodOptions);
 
     t.is(fetchMock.lastUrl(matcher), '/rest-api/user/path?edit=true', 'correct url');
+
+    let result = fetchMock.lastOptions(matcher);
+
+    delete result.signal;
+
     t.deepEqual(fetchMock.lastOptions(matcher), {
         cache: 'default',
         credentials: 'omit',
@@ -166,7 +177,12 @@ test.serial('fetch options', async t => {
     await callAPIMethod(APINamespace, fetchOptions, namespace, responseOptions, newMethodOptions);
 
     t.true(spyResponse200Json.calledOnce);
-    t.deepEqual(fetchMock.lastOptions(matcher), {
+
+    result = fetchMock.lastOptions(matcher);
+
+    delete result.signal;
+
+    t.deepEqual(result, {
         cache: 'default',
         credentials: 'omit',
         method: 'POST',
@@ -181,7 +197,7 @@ test.serial('fetch options', async t => {
 });
 
 test.serial('unsupported Response method', async t => {
-    fetchMock.get(matcher, Response200);
+    fetchMock.get(matcher, Response200, { overwriteRoutes: false });
 
     const APINamespace = 'rest-api';
     const namespace = 'user';
@@ -205,7 +221,7 @@ test.serial('unsupported Response method', async t => {
 });
 
 test.serial('returns full response object', async t => {
-    fetchMock.get(matcher, Response200);
+    fetchMock.get(matcher, Response200, { overwriteRoutes: false });
 
     const APINamespace = 'rest-api';
     const namespace = 'user';

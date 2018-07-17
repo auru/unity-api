@@ -6,7 +6,8 @@ const createAPI = (
     resources = {},
     middleware = [],
     APINamespace,
-    fetchOptions
+    fetchOptions,
+    cancelNamespace = 'CANCEL'
 ) => Object.keys(resources).reduce( (api, resourceId) => {
     api[resourceId] = Object.keys(resources[resourceId].methods)
         .reduce( (resource, method) => {
@@ -25,7 +26,8 @@ const createAPI = (
                     methodOptions,
                     apiParams,
                     resourceId,
-                    method
+                    method,
+                    cancelNamespace
                 );
             };
             return resource;

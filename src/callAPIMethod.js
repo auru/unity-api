@@ -1,4 +1,5 @@
 import 'isomorphic-fetch';
+import { AbortController } from 'abortcontroller-polyfill/dist/cjs-ponyfill';
 import { formatURL } from './utils';
 import APIError from './error';
 
@@ -16,13 +17,16 @@ const defaults = {
     }
 };
 
-export default function callAPI(
+const callAPI = function callAPI(
     APINamespace = defaults.APINamespace,
     fetchOptions = defaults.fetchOptions,
     namespace = '',
     responseOptions = defaults.responseOptions,
-    methodOptions = {}
+    methodOptions = {},
+    cancelNamespace
 ) {
+    callAPI.controller = new AbortController();
+    const signal = callAPI.controller.signal;
 
     const {
         path=[],
@@ -39,12 +43,13 @@ export default function callAPI(
     const accumulatedFetchOptions = {
         ...defaults.fetchOptions,
         ...fetchOptions,
-        ...options
+        ...options,
+        signal
     };
     if (headers) accumulatedFetchOptions.headers = headers;
     if (body) accumulatedFetchOptions.body = body;
 
-    return fetch(url, accumulatedFetchOptions)
+    const p = fetch(url, accumulatedFetchOptions)
         .then( response => response[type || method]()
             .catch( () => {
                 if (!response.ok) throw new APIError(response.status, response.statusText, response.body);
@@ -78,4 +83,16 @@ export default function callAPI(
                 return result;
             }))
         .catch( error => error);
-}
+
+    p[cancelNamespace] = abort;
+
+    return p;
+};
+
+export default callAPI;
+
+export function abort() {
+    if (callAPI.controller) {
+        callAPI.controller.abort();
+    }
+};
