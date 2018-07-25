@@ -1,68 +1,13 @@
 import 'isomorphic-fetch';
 import 'abortcontroller-polyfill/dist/abortcontroller-polyfill-only';
 
-import { formatURL } from './utils';
+import APIAbort from './abort';
 import APIError from './error';
+import { formatURL } from './utils';
 
 import { DEFAULTS } from './constants';
 
-function AbortAPI() {
-    if (AbortAPI.instance) {
-        return AbortAPI.instance;
-    }
-
-    const state = {};
-
-    const createInstance = uuid => {
-        const controller = new AbortController();
-        const signal = controller.signal;
-        const abort = () => controller.abort();
-
-        state[uuid] = {
-            controller,
-            signal,
-            abort
-        };
-    };
-
-    const destroyInstance = uuid => {
-        delete state[uuid];
-    };
-
-    this.getController = uuid => {
-        if (state[uuid]) {
-            createInstance(uuid);
-        }
-
-        return state[uuid].controller;
-    };
-
-    this.getSignal = uuid => {
-        if (state[uuid]) {
-            createInstance(uuid);
-        }
-
-        return state[uuid].signal;
-    };
-
-    this.getAbort = uuid => {
-        if (state[uuid]) {
-            createInstance(uuid);
-        }
-
-        return state[uuid].abort;
-    };
-
-    this.destroy = uuid => {
-        destroyInstance(uuid);
-    };
-
-    AbortAPI.instance = this;
-
-    return this;
-}
-
-function callAPI(
+function call(
     uuid = '',
     APINamespace = DEFAULTS.APINamespace,
     resourceNamespace = '',
@@ -81,9 +26,8 @@ function callAPI(
 
     const url = formatURL(APINamespace, resourceNamespace, path, query);
 
-    const abortAPI = new AbortAPI();
-    const signal = abortAPI.getSignal(uuid);
-    const abort = abortAPI.getAbort(uuid);
+    const signal = APIAbort.getSignal(uuid);
+    const abort = APIAbort.getAbort(uuid);
 
     const accumulatedFetchOptions = { ...DEFAULTS.fetchOptions, ...options, signal };
     if (headers) accumulatedFetchOptions.headers = headers;
@@ -99,8 +43,6 @@ function callAPI(
                 return response.body || null;
             })
             .then(result => {
-                abortAPI.destroy(uuid);
-
                 if (!response.ok) {
                     throw new APIError(response.status, response.statusText, result);
                 }
@@ -124,16 +66,12 @@ function callAPI(
 
                 return { ...writableResponse, ...{ body: result } };
             }))
-        .catch(error => error);
+        .catch(error => error)
+        .finally(() => APIAbort.destroy(uuid));
 
     fetchPromise[cancelNamespace] = abort;
 
     return fetchPromise;
 };
 
-export {
-    AbortAPI,
-    callAPI
-};
-
-export default callAPI;
+export default call;

@@ -17,12 +17,3 @@ export function formatURL(APINamespace = '', namespace = '', path=[], query={}) 
         query: uri.query(query)
     });
 }
-
-export function uuid() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-        const rand = Math.random() * 16 | 0;
-        const sign = c === 'x' ? rand : ((rand & 0x3) | 0x8);
-
-        return sign.toString(16);
-    });
-}

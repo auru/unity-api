@@ -14,7 +14,7 @@ function createAPI(
                 resource[method] = (params, middlewaresOptions) => {
                     const resourceNamespace = (resources[resourceId].namespace || resources[resourceId].prefix);
                     const requestParams = resources[resourceId].methods[method](params);
-    
+
                     return applyMiddlewares(
                         middlewares,
                         middlewaresOptions,
@@ -26,10 +26,10 @@ function createAPI(
                         method
                     );
                 };
-    
+
                 return resource;
             }, {});
-    
+
         return api;
     }, {});
 }

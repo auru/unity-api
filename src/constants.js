@@ -2,7 +2,7 @@ const DEFAULTS = {
     APINamespace: 'api',
     cancelNamespace: 'cancel',
     // https://developer.mozilla.org/en-US/docs/Web/API/GlobalFetch/fetch#Parameters
-    fetchOption: {
+    fetchOptions: {
         method: 'GET',
         mode: 'cors',
         cache: 'default',

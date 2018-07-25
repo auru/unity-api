@@ -1,5 +1,6 @@
-import { callAPI, AbortAPI } from './callAPI';
-import { uuid as uuidGenerator } from './utils';
+import APICall from './call';
+import APIAbort from './abort';
+import uuidGenereator from 'uuid/v4';
 
 import { DEFAULTS } from './constants';
 
@@ -13,9 +14,9 @@ function applyMiddlewares(
     resourceId = '',
     method = ''
 ) {
-    const uuid = uuidGenerator();
+    const uuid = uuidGenereator();
 
-    const boundCallAPI = callAPI.bind(
+    const boundAPICall = APICall.bind(
         null,
         uuid,
         APINamespace,
@@ -23,10 +24,8 @@ function applyMiddlewares(
         cancelNamespace
     );
 
-    middlewares = [].concat(middlewares).filter(func => typeof func === 'function');
-
     if (!middlewares.length) {
-        return boundCallAPI(requestParams);
+        return boundAPICall(requestParams);
     }
 
     return middlewares.reduceRight((prev, middleware, index) => {
@@ -39,13 +38,13 @@ function applyMiddlewares(
         if (index === 0) {
             const newMw = mw(middlewaresOptions, requestParams, resourceId, method);
 
-            newMw[cancelNamespace] = (new AbortAPI()).getAbort(uuid);
+            newMw[cancelNamespace] = APIAbort.getAbort(uuid);
 
             return newMw;
         }
 
         return mw;
-    }, callAPI);
+    }, boundAPICall);
 }
 
 export default applyMiddlewares;

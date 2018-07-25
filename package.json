@@ -1,6 +1,6 @@
 {
   "name": "unity-api",
-  "version": "2.2.1",
+  "version": "3.0.0",
   "description": "REST-API helper, wrapped around fetch.",
   "main": "dist/index.js",
   "scripts": {
@@ -48,7 +48,8 @@
     "abortcontroller-polyfill": "^1.1.9",
     "isomorphic-fetch": "^2.2.1",
     "unity-utils": "^1.0.1",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "ava": "^0.25.0",
