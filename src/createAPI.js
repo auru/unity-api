@@ -1,36 +1,37 @@
-import callAPIMethod from './callAPIMethod';
+import applyMiddlewares from './applyMiddlewares';
 
-import applyMiddleware from './applyMiddleware';
+import { DEFAULTS } from './constants';
 
-const createAPI = (
+function createAPI(
     resources = {},
-    middleware = [],
-    APINamespace,
-    fetchOptions
-) => Object.keys(resources).reduce( (api, resourceId) => {
-    api[resourceId] = Object.keys(resources[resourceId].methods)
-        .reduce( (resource, method) => {
-            resource[method] = (params, methodOptions, responseOptions) => {
-                const apiParams = resources[resourceId].methods[method](params);
-                const boundCallAPIMethod = callAPIMethod.bind(
-                    null,
-                    APINamespace,
-                    fetchOptions,
-                    (resources[resourceId].namespace || resources[resourceId].prefix),
-                    responseOptions
-                );
-                return applyMiddleware(
-                    boundCallAPIMethod,
-                    middleware,
-                    methodOptions,
-                    apiParams,
-                    resourceId,
-                    method
-                );
-            };
-            return resource;
-        }, {});
-    return api;
-}, {});
+    middlewares = [],
+    APINamespace = DEFAULTS.APINamespace,
+    cancelNamespace = DEFAULTS.cancelNamespace
+) {
+    return Object.keys(resources).reduce( (api, resourceId) => {
+        api[resourceId] = Object.keys(resources[resourceId].methods)
+            .reduce((resource, method) => {
+                resource[method] = (params, middlewaresOptions) => {
+                    const resourceNamespace = (resources[resourceId].namespace || resources[resourceId].prefix);
+                    const requestParams = resources[resourceId].methods[method](params);
+    
+                    return applyMiddlewares(
+                        middlewares,
+                        middlewaresOptions,
+                        APINamespace,
+                        resourceNamespace,
+                        cancelNamespace,
+                        requestParams,
+                        resourceId,
+                        method
+                    );
+                };
+    
+                return resource;
+            }, {});
+    
+        return api;
+    }, {});
+}
 
 export default createAPI;
