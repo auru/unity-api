@@ -34,40 +34,49 @@ function call(
     if (body) accumulatedFetchOptions.body = body;
 
     const fetchPromise = fetch(url, accumulatedFetchOptions)
-        .then(response => response[type || method]()
-            .catch(() => {
-                if (!response.ok) {
-                    throw new APIError(response.status, response.statusText, response.body);
-                }
+        .then(response => {
+            // Promise.prototype.finally is proposal
+            // https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise/finally
+            APIAbort.destroy(uuid);
 
-                return response.body || null;
-            })
-            .then(result => {
-                if (!response.ok) {
-                    throw new APIError(response.status, response.statusText, result);
-                }
+            return response[type || method]()
+                .catch(() => {
+                    if (!response.ok) {
+                        throw new APIError(response.status, response.statusText, response.body);
+                    }
 
-                // https://developer.mozilla.org/en-US/docs/Web/API/Response
-                const writableResponse = [
-                    'headers',
-                    'ok',
-                    'redirected',
-                    'status',
-                    'statusText',
-                    'type',
-                    'url',
-                    'useFinalURL',
-                    'bodyUsed'
-                ].reduce((res, key) => {
-                    res[key] = response[key];
+                    return response.body || null;
+                })
+                .then(result => {
+                    if (!response.ok) {
+                        throw new APIError(response.status, response.statusText, result);
+                    }
 
-                    return res;
-                }, {});
+                    // https://developer.mozilla.org/en-US/docs/Web/API/Response
+                    const writableResponse = [
+                        'headers',
+                        'ok',
+                        'redirected',
+                        'status',
+                        'statusText',
+                        'type',
+                        'url',
+                        'useFinalURL',
+                        'bodyUsed'
+                    ].reduce((res, key) => {
+                        res[key] = response[key];
 
-                return { ...writableResponse, ...{ body: result } };
-            }))
-        .catch(error => error)
-        .finally(() => APIAbort.destroy(uuid));
+                        return res;
+                    }, {});
+
+                    return { ...writableResponse, ...{ body: result } };
+                });
+        })
+        .catch(error => {
+            APIAbort.destroy(uuid);
+
+            return error;
+        });
 
     fetchPromise[cancelNamespace] = abort;
 

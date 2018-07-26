@@ -4,47 +4,50 @@ import applyMiddleware from '../src/applyMiddleware';
 
 const noop = _ => _;
 
-test('applyTo is required', t => {
-    t.throws(() => applyMiddleware());
+test('no middleware returns fetch promise', t => {
+    let fetchPromise;
+
+    t.notThrows(() => {
+        fetchPromise = applyMiddleware();
+    });
+    t.true(fetchPromise instanceof Promise);
+    t.true(typeof fetchPromise.cancel === 'function');
 });
 
-test('applyTo is not a function', t => {
-    const applyTo = 'oops';
-    t.throws(() => applyMiddleware(applyTo));
-});
+test('no functional middleware return fetch promise', t => {
+    let fetchPromise;
+    const middleware = ['test', undefined, {}, [], 123, null, NaN, /^/];
 
-test('no middleware returns default params', t => {
-    const spyApplyTo = sinon.spy(noop);
-
-    t.deepEqual(applyMiddleware(spyApplyTo), {});
-    t.true(spyApplyTo.calledOnce);
-    t.true(spyApplyTo.calledWithExactly({}));
-});
-
-test('no functional middleware returns default params', t => {
-    const applyTo = sinon.spy(noop);
-    const middlewares = [
-        'test', undefined, {}, [], 123, null, NaN, /^/
-    ];
-
-    t.deepEqual(applyMiddleware(applyTo, middlewares), {});
-    t.true(applyTo.calledOnce);
-    t.true(applyTo.calledWithExactly({}));
+    t.notThrows(() => {
+        fetchPromise = applyMiddleware(middleware);
+    });
+    t.true(fetchPromise instanceof Promise);
+    t.true(typeof fetchPromise.cancel === 'function');
 });
 
 test('one middleware', t => {
-    const applyTo = sinon.spy(noop);
     const middleware = sinon.spy(noop);
 
     const options = { options: 'options' };
+    const api = 'api';
+    const resource = 'resource';
+    const cancel = 'cancel';
     const params = { params: 'params' };
     const resourceId = 'resourceId';
     const method = 'method';
 
-    t.deepEqual(applyMiddleware(applyTo, [ middleware ], options, params, resourceId, method), params);
-    t.true(applyTo.calledOnce);
-    t.true(applyTo.calledWithExactly(params, options, params, resourceId, method));
-    t.true(middleware.calledOnce);
+    const promise = applyMiddleware(
+        [ middleware ],
+        options,
+        api,
+        resource,
+        cancel,
+        params,
+        resourceId,
+        method
+    );
+
+    t.true(typeof promise.cancel === 'function');
 
     const middlewareSpyCall = middleware.getCall(0);
     t.true(middlewareSpyCall.args.length === 1);
@@ -53,21 +56,30 @@ test('one middleware', t => {
     t.true(middlewareSpyCall.args[0].prototype === undefined);
 });
 
-test('multiple middlewares', t => {
-    const applyTo = sinon.spy(noop);
+test('multiple middleware', t => {
     const middleware1 = sinon.spy(noop);
     const middleware2 = sinon.spy(noop);
 
     const options = { options: 'options' };
+    const api = 'api';
+    const resource = 'resource';
+    const cancel = 'cancel';
     const params = { params: 'params' };
     const resourceId = 'resourceId';
     const method = 'method';
 
-    t.deepEqual(applyMiddleware(applyTo, [ middleware1, middleware2 ], options, params, resourceId, method), params);
-    t.true(applyTo.calledOnce);
-    t.true(applyTo.calledWithExactly(params, options, params, resourceId, method, options, params, resourceId, method));
-    t.true(middleware1.calledOnce);
-    t.true(middleware2.calledOnce);
+    const promise = applyMiddleware(
+        [ middleware1, middleware2 ],
+        options,
+        api,
+        resource,
+        cancel,
+        params,
+        resourceId,
+        method
+    );
+
+    t.true(typeof promise.cancel === 'function');
 
     const middleware1SpyCall = middleware1.getCall(0);
     t.true(middleware1SpyCall.args.length === 1);

@@ -26,7 +26,7 @@ npm i --save unity-api
 ```
 
 # API
-## createAPI(resources, middleware, namespace, fetchOptions);
+## createAPI(resources, middleware, namespace, cancelNamespace);
 
 **Returns:** {Object}
 
@@ -155,38 +155,22 @@ export default next => async (middlewareOptions, apiCallParams, resource, method
 
 Usually you would want to proxy api calls from the SPA to the backend using some common namespace. *e.g.* example.com/**api**/user/get
 
-### fetchOptions {Object} *Optional*
+### cancelNamespace {String} *Optional*
 
-**Default:**
+**Default:** `'cancel'`
 
 ```js
-{
-   method: 'GET',
-   mode: 'cors',
-   cache: 'default',
-   credentials: 'include'
-}
+const promise = API.example.get();
+
+promise.cancel();
 ```
 
-API-wide default `fetch` [options](https://developer.mozilla.org/en-US/docs/Web/API/GlobalFetch/fetch#Parameters).
+Usually you would want to cancel api calls. This is the name of the cancel method.
 
 # Usage
 
 You can call your API methods like so: 
-`API[resource][method](methodParams, middlewareOptions, responseOptions)`
-
-# responseOptions {Object} *Optional*
-
-**Default:**
-
-```js
-{
-  fullResponse: false
-}
-```
-
-If `fullResponse` is `true`, it will return [Response like structured](https://developer.mozilla.org/en-US/docs/Web/API/Response) object with parsed body.
-
+`API[resource][method](methodParams, middlewareOptions)`
 
 # Example
 
@@ -227,13 +211,7 @@ const middleware = [
   logger
 ]
 
-fetchOptions = {
-  method: 'GET',
-  mode: 'cors',
-  cache: 'default',
-  credentials: 'include'
-}
-const API = createAPI(resources, middleware, 'api', fetchOptions);
+const API = createAPI(resources, middleware, 'api', 'cancel');
 
 export default API;
 ```
