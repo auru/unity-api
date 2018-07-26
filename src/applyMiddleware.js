@@ -4,9 +4,9 @@ import uuidGenereator from 'uuid/v4';
 
 import { DEFAULTS } from './constants';
 
-function applyMiddlewares(
-    middlewares = [],
-    middlewaresOptions = {},
+function applyMiddleware(
+    middleware = [],
+    middlewareOptions = {},
     APINamespace = DEFAULTS.APINamespace,
     resourceNamespace = '',
     cancelNamespace = DEFAULTS.cancelNamespace,
@@ -24,19 +24,21 @@ function applyMiddlewares(
         cancelNamespace
     );
 
-    if (!middlewares.length) {
+    middleware = [].concat(middleware).filter(func => typeof func === 'function');
+
+    if (!middleware.length) {
         return boundAPICall(requestParams);
     }
 
-    return middlewares.reduceRight((prev, middleware, index) => {
-        const next = index === middlewares.length - 1
+    return middleware.reduceRight((prev, item, index) => {
+        const next = index === middleware.length - 1
             ? prev.bind(null, requestParams)
-            : prev.bind(null, middlewaresOptions, requestParams, resourceId, method);
+            : prev.bind(null, middlewareOptions, requestParams, resourceId, method);
 
-        const mw = middleware(next);
+        const mw = item(next);
 
         if (index === 0) {
-            const newMw = mw(middlewaresOptions, requestParams, resourceId, method);
+            const newMw = mw(middlewareOptions, requestParams, resourceId, method);
 
             newMw[cancelNamespace] = APIAbort.getAbort(uuid);
 
@@ -47,4 +49,4 @@ function applyMiddlewares(
     }, boundAPICall);
 }
 
-export default applyMiddlewares;
+export default applyMiddleware;

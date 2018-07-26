@@ -12,11 +12,11 @@ const create = uuid => {
     };
 };
 
-const destroy = uuid => {
+const destroy = (uuid = '') => {
     delete state[uuid];
 };
 
-const getController = uuid => {
+const getController = (uuid = '') => {
     if (!state[uuid]) {
         create(uuid);
     }
@@ -24,7 +24,7 @@ const getController = uuid => {
     return state[uuid].controller;
 };
 
-const getSignal = uuid => {
+const getSignal = (uuid = '') => {
     if (!state[uuid]) {
         create(uuid);
     }
@@ -32,7 +32,7 @@ const getSignal = uuid => {
     return state[uuid].signal;
 };
 
-const getAbort = uuid => {
+const getAbort = (uuid = '') => {
     if (!state[uuid]) {
         create(uuid);
     }
