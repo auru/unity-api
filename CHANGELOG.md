@@ -1,3 +1,11 @@
+## 3.0.0 (2018-07-27)
+
+* feat(fetch): add cancel callback and return only response-like object ([a473860](https://github.com/auru/unity-api/commit/a473860))
+* feat(fetch): fix tests and readme ([72b4e8d](https://github.com/auru/unity-api/commit/72b4e8d))
+* fix(fetch): fix issues ([5fcb6e2](https://github.com/auru/unity-api/commit/5fcb6e2))
+
+
+
 ## <small>2.2.1 (2018-07-13)</small>
 
 * fix: callAPI params order ([dc468b8](https://github.com/auru/unity-api/commit/dc468b8))
