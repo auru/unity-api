@@ -35,6 +35,17 @@ function call(
 
     const fetchPromise = fetch(url, accumulatedFetchOptions)
         .then(response => {
+            // Fetch AbortSignal support
+            // Note: When abort() is called, the fetch() promise rejects with an AbortError
+            // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+            // https://developer.mozilla.org/en-US/docs/Web/API/AbortController
+            if (signal.aborted) {
+                const abortError = new Error('Fetch abort signal');
+                abortError.name = 'AbortError';
+
+                throw abortError;
+            }
+
             // Promise.prototype.finally is proposal
             // https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/Promise/finally
             APIAbort.destroy(uuid);
