@@ -1,3 +1,14 @@
+## <small>3.0.1 (2018-12-06)</small>
+
+* feat(fetch): add cancel callback and return only response-like object ([a473860](https://github.com/auru/unity-api/commit/a473860))
+* feat(fetch): fix tests and readme ([72b4e8d](https://github.com/auru/unity-api/commit/72b4e8d))
+* fix(ApiCall): fix AbortSignal support ([5c5bd73](https://github.com/auru/unity-api/commit/5c5bd73))
+* fix(fetch): fix issues ([5fcb6e2](https://github.com/auru/unity-api/commit/5fcb6e2))
+* chore: update changelog ([f8a68a4](https://github.com/auru/unity-api/commit/f8a68a4))
+* chore: update package-lock file ([43d4d97](https://github.com/auru/unity-api/commit/43d4d97))
+
+
+
 ## 3.0.0 (2018-07-27)
 
 * feat(fetch): add cancel callback and return only response-like object ([a473860](https://github.com/auru/unity-api/commit/a473860))
