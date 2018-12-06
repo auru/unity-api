@@ -1,7 +1,14 @@
 function APIError(code, message, body) {
     this.code = code;
     this.message = (message || '');
-    this.body = body;
+
+    if (body) {
+        try {
+            this.body = JSON.parse(body);
+        } catch (e) {
+            this.body = body;
+        }
+    }
 }
 
 Object.setPrototypeOf(APIError.prototype, Error.prototype);

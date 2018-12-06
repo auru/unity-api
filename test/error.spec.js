@@ -2,7 +2,7 @@ import test from 'ava';
 import APIError from '../src/error';
 
 test.beforeEach(t => {
-    t.context.error = new APIError(404, 'Not Found', { body: 'body'});
+    t.context.error = new APIError(404, 'Not Found', '{"a": "body"}');
     t.context.errorNoMessage = new APIError(404);
 });
 
@@ -22,5 +22,5 @@ test('to string', t => {
 test('has correct attributes', t => {
     t.is(t.context.error.code, 404);
     t.is(t.context.error.message, 'Not Found');
-    t.deepEqual(t.context.error.body, { body: 'body'});
+    t.deepEqual(t.context.error.body, { a: 'body' });
 });
