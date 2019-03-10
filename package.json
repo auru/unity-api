@@ -45,7 +45,7 @@
     "node": ">=8.10.0"
   },
   "dependencies": {
-    "abortcontroller-polyfill": "^1.1.9",
+    "abortcontroller-polyfill": "^1.2.7",
     "isomorphic-fetch": "^2.2.1",
     "unity-utils": "^1.0.1",
     "url": "^0.11.0",
