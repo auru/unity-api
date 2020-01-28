@@ -63,7 +63,7 @@
     "commitizen": "^2.9.6",
     "conventional-changelog-cli": "^2.0.1",
     "coveralls": "^3.0.0",
-    "cz-conventional-changelog": "^2.0.0",
+    "cz-conventional-changelog": "^3.1.0",
     "eslint": "^5.1.0",
     "eslint-plugin-ava": "^4.2.2",
     "fetch-mock": "^6.5.0",
